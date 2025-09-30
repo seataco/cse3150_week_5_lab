@@ -15,16 +15,22 @@ int compute_score(const std::vector<std::vector<int>>& board);
 
 #include <iterator>
 
-// TODO: Compress a row: remove zeros, pad with zeros at the end
 std::vector<int> compress_row(const std::vector<int>& row) {
-    // TODO: Use copy_if to filter non-zero values, then pad with zeros
-    return row;
+    std::vector<int> compressed;
+    copy_if(row.begin(), row.end(), std::back_inserter(compressed), [](int x) { return x != 0; });
+    compressed.resize(4, 0);
+    return compressed;
 }
 
-// TODO: Merge a row (assumes already compressed)
 std::vector<int> merge_row(std::vector<int> row) {
-    // TODO: Implement merging logic - combine adjacent equal tiles
-    return row;
+    for (auto it = row.begin(); it != row.end() - 1; ++it) {
+        if (*it == *(it+1)) {
+            *it *= 2;
+            *(it+1) = 0;
+        }
+    }
+    
+    return compress_row(row);
 }
 
 
