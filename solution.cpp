@@ -127,17 +127,43 @@ bool move_right(std::vector<std::vector<int>>& board) {
     return moved;
 }
 
-// TODO: Implement move_up (work with columns)
 bool move_up(std::vector<std::vector<int>>& board) {
     bool moved = false;
-    // TODO: Extract column, compress, merge, write back
+    // for better practice, consider using auto
+    for (int c = 0; c < 4; c++) {
+        std::vector<int> column;
+        for (int r = 0; r < 4; r++) {
+            column.push_back(board[r][c]);
+        }
+        std::vector<int> original_column = column;
+        column = compress_row(column);
+        column = merge_row(column);
+        moved = moved || (column != original_column);
+        for (int r = 0; r < 4; r++) {
+            board[r][c] = column[r];
+        }
+    }
     return moved;
 }
 
-// TODO: Implement move_down (columns with reversal)
 bool move_down(std::vector<std::vector<int>>& board) {
     bool moved = false;
-    // TODO: Similar to move_up but with reversal
+    // for better practice, consider using auto
+    for (int c = 0; c < 4; c++) {
+        std::vector<int> column;
+        for (int r = 0; r < 4; r++) {
+            column.push_back(board[r][c]);
+        }
+        std::vector<int> original_column = column;
+        reverse(column.begin(), column.end());
+        column = compress_row(column);
+        column = merge_row(column);
+        reverse(column.begin(), column.end());
+        moved = moved || (column != original_column);
+        for (int r = 0; r < 4; r++) {
+            board[r][c] = column[r];
+        }
+    }
     return moved;
 }
 
