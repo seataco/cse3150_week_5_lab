@@ -77,10 +77,6 @@ void read_board_csv(vector<vector<int>>& board) {
 }
 
 void print_board(const vector<vector<int>>& board) {
-    // TODO: Print the score using compute_score(board)
-    // TODO: Print the board in a 4x4 format
-    // TODO: Use dots (.) for empty cells (value 0)
-    // TODO: Use tabs (\t) to separate values for alignment
     cout<<"Score: "<<compute_score(board)<<endl;
     for (auto& row : board) {
         for (auto& cell : row) {
@@ -107,20 +103,27 @@ void spawn_tile(std::vector<std::vector<int>>& board) {
     board[r][c] = (val_dist(gen) == 1 ? 4 : 2); // 10% chance of 4
 }
 
-// TODO: Implement move_left using compress_row and merge_row
 bool move_left(std::vector<std::vector<int>>& board) {
     bool moved = false;
-    // TODO: For each row:
-    //   1. Compress the row (remove zeros)
-    //   2. Merge adjacent equal tiles
-    //   3. Check if the row changed
+    for (auto& row : board) {
+        std::vector<int> original_row = row;
+        row = compress_row(row);
+        row = merge_row(row);
+        moved = moved || (row != original_row);
+    }
     return moved;
 }
 
-// TODO: Implement move_right (hint: reverse, compress, merge, reverse)
 bool move_right(std::vector<std::vector<int>>& board) {
     bool moved = false;
-    // TODO: Similar to move_left but with reversal
+    for (auto& row : board) {
+        std::vector<int> original_row = row;
+        reverse(row.begin(), row.end());
+        row = compress_row(row);
+        row = merge_row(row);
+        reverse(row.begin(), row.end());
+        moved = moved || (row != original_row);
+    }
     return moved;
 }
 
