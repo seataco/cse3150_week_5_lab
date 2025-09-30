@@ -200,13 +200,13 @@ int main(){
         if (cmd=='q') break;
 
         if (cmd=='u') {
-            // TODO: Check if history stack is not empty using !history.empty()
-            // If not empty:
-            //   1. Set board = history.top() to restore the previous state
-            //   2. Remove the top element with history.pop()
-            //   3. Call print_board(board) to show the restored board
-            //   4. Call write_board_csv(board, false, "undo") to log the undo
-            // Use 'continue' to skip the rest of the loop iteration
+            if (!history.empty()) {
+                board = history.top();
+                history.pop();
+                print_board(board);
+                write_board_csv(board, false, "undo");
+                continue;
+            }
         }
 
         vector<vector<int>> prev = board;
@@ -217,9 +217,9 @@ int main(){
         else if (cmd=='s') moved=move_down(board);
 
         if (moved) {
-            // TODO: Push the previous board state to history stack
+            
             // Use: history.push(prev)
-
+            history.push(prev);
             // Write board after merge but before spawn
             write_board_csv(board, false, "merge");
 
